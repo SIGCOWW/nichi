@@ -1,0 +1,33 @@
+{
+  "name": "nichi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SIGCOWW/nichi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SIGCOWW/nichi/issues"
+  },
+  "homepage": "https://github.com/SIGCOWW/nichi#readme",
+  "dependencies": {
+    "@slack/client": "^4.3.1",
+    "csv": "^3.1.0",
+    "csv-parse": "^2.5.0",
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "iconv-lite": "^0.4.23",
+    "js-yaml": "^3.12.0",
+    "moment": "^2.22.2",
+    "node-hid": "^0.7.3",
+    "pi-spi": "^1.0.2",
+    "serialport": "^6.2.2",
+    "socket.io": "^2.1.1"
+  }
+}
