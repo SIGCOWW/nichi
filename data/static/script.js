@@ -34,6 +34,7 @@ $(function() {
 			}
 		};
 
+		socket.emit('press', 'Q');
 		window.location = 'square-commerce-v1://payment/create?data=' + encodeURIComponent(JSON.stringify(param));
 	});
 
@@ -44,7 +45,7 @@ $(function() {
 			return;
 		}
 
-		socket.emit('press', keychar);
+		socket.emit('press', 'Q' + keychar + 'e');
 		window.location = 'serval://';
 	});
 
@@ -54,7 +55,7 @@ $(function() {
 		$('div.modal').removeClass("is-active");
 		$('#sample').show();
 	}
-	
+
 	var timeout = null;
 	$(window).on('load click', function() {
 		clearTimeout(timeout);
@@ -104,7 +105,7 @@ $(function() {
 	$('#conft').on('click', function() {
 		$('div.modal').addClass("is-active");
 	})
-	
+
 	$('div.modal-background').on('click', function() {
 		$('div.modal').removeClass('is-active');
 	})
