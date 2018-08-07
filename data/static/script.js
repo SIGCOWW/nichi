@@ -14,10 +14,19 @@ $(function() {
 		$('#pxvpay').data('keychar', data.keychar);
 	}
 
+	$('#test').on('click', function() {
+		$('#price').text('100');
+	});
+
 	$('#square').on('click', function() {
 		var appid = $('#square').data('appid');
 		if (!appid) {
 			alert('[Square] AppID未設定');
+			return;
+		}
+
+		if (Number($('#price').text()) < 100) {
+			alert('[Square] 100円未満の決済不可');
 			return;
 		}
 
@@ -119,6 +128,7 @@ $(function() {
 		});
 
 		socket.on('purchase', function(data) {
+			$(window).click();
 			purchase(data);
 		});
 	});
