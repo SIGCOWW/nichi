@@ -128,7 +128,8 @@ $(function() {
 		});
 
 		socket.on('purchase', function(data) {
-			$(window).click();
+			$(window).trigger('click');
+			$('#sample').trigger('click');
 			purchase(data);
 		});
 	});

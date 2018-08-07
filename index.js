@@ -20,8 +20,24 @@ display.start(config);
 
 // Scanner
 const scanner = require('./lib/scanner');
+const exec = require('child_process').exec;
 const onScan = (isdn) => {
 	debug(`onScan: ${isdn}`);
+	if (isdn === config.initcode) {
+		const handler = (err, stdout, stderr) => {
+			if (err) {
+				debug(err);
+				debug(stdout);
+				debug(stderr);
+			}
+		}
+
+		exec('tvservice --off', handler);
+		exec('ifconfig wlan0 down', handler);
+		if (config.btaddr) exec('sudo bt-pan --debug client ' + config.btaddr, handler);
+	}
+
+
 	const data = database.search(isdn);
 	if (data === null) return;
 
