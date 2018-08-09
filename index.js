@@ -33,7 +33,7 @@ const onScan = (isdn) => {
 		}
 
 		exec('tvservice --off', handler);
-		exec('ifconfig wlan0 down', handler);
+		exec('sudo ifconfig wlan0 down', handler);
 		if (config.btaddr) exec('sudo bt-pan --debug client ' + config.btaddr, handler);
 	}
 
