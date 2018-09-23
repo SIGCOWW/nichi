@@ -1,10 +1,9 @@
 'use strict';
 const debug = require('debug')('nichi');
 const hid = require('node-hid');
-const readline = require('readline');
 
-module.exports.hid = (vid, pid, callback) => {
-	debug(`Read HID: ${vid}:${pid}`);
+module.exports.read = (vid, pid, callback) => {
+	debug(`Read USB-HID: ${vid}:${pid}`);
 
 	let scanner = new hid.HID(vid, pid);
 	let buffer = '';
@@ -29,14 +28,4 @@ module.exports.hid = (vid, pid, callback) => {
 			break;
 		}
 	});
-}
-
-module.exports.stdin = (callback) => {
-	debug('Read stdin');
-
-	let rl = readline.createInterface({
-		input: process.stdin,
-		output: process.stdout
-	});
-	rl.on('line', (line) => { callback(line); });
 }
