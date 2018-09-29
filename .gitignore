@@ -61,6 +61,7 @@ typings/
 .next
 
 
-meta/
-*.yml
 *.csv
+database/data/*.png
+database/data/*.pdf
+database/data/*.yml
