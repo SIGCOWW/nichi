@@ -3,6 +3,7 @@ const debug = require('debug')('nichi');
 const mqtt = require('mqtt');
 const db = require('./data');
 const cart = require('./cart');
+const log = require('./log');
 
 const PREPRINT_COUNT = 20;
 const PAYMENT_METHODS = ['cancel', 'cash', 'square', 'pixivpay'];
@@ -33,7 +34,9 @@ const handler = (topic, message) => {
 	case 'cart':
 		if (subcategory === 'checkout') {
 			if (0 <= message < PAYMENT_METHODS.length) {
-				pub('notice/payment', {'method':PAYMENT_METHODS[message], 'cart':cart.items()});
+				const method = PAYMENT_METHODS[message]
+				const tomisata = log.total(method, cart.items());
+				pub('notice/payment', {'method':method, 'cart':cart.items(), 'tomisata':tomisata});
 				cart.clear();
 			}
 			break;

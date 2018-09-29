@@ -6,20 +6,22 @@ const mosca = require('mosca');
 const yaml = require('js-yaml');
 const fs = require('fs');
 
-const rootpath = require('path').resolve(__dirname);
-const configpath = rootpath + '/config.yml';
+let program = require('commander');
+program
+	.usage('[options]')
+	.option('--http <port>', 'HTTP Port')
+	.option('--mqtt <port>', 'MQTT Port')
+	.parse(process.argv);
 
-let config = fs.existsSync(configpath) ? yaml.safeLoad(fs.readFileSync(configpath, 'utf8')) : {};
-config.httpport = config.httpport || 3000;
-config.mqttport = config.mqttport || 1883;
-
+const httpport = program.http || 3000;
+const mqttport = program.mqtt || 1883;
 
 const app = express();
 const httpServer = http.createServer(app);
-const mqttServer = new mosca.Server({port: config.mqttport});
+const mqttServer = new mosca.Server({port: mqttport});
 
-app.use(express.static(rootpath));
-mqttServer.on('ready', () => debug(`MQTT server is running on ${config.mqttport}`));
+app.use(express.static(require('path').resolve(__dirname) + '/static'));
+mqttServer.on('ready', () => debug(`MQTT server is running on ${mqttport}`));
 mqttServer.on('clientConnected', client => debug(`MQTT connected: ${client.id}`));
 mqttServer.on('clientDisconnected', client => debug(`MQTT disconnected: ${client.id}`));
 mqttServer.on('subscribed', (topic, client) => debug(`MQTT subscribed: ${client.id} on ${topic}`));
@@ -29,5 +31,5 @@ mqttServer.on('published', (packet, client) => {
 });
 
 mqttServer.attachHttpServer(httpServer);
-httpServer.listen(config.httpport);
-debug(`Webserver runnning on ${config.httpport}`);
+httpServer.listen(httpport);
+debug(`Webserver runnning on ${httpport}`);
