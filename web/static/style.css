@@ -1,0 +1,51 @@
+body {
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#sample {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	display: none;
+	animation: bgloop 600s linear infinite;
+}
+
+@keyframes bgloop {
+	from {
+		transform: translate3d(100vw, 0, 0);
+	}
+	to {
+		transform: translate3d(calc(-100%), 0, 0);
+	}
+}
+
+#item {
+	padding: 0;
+}
+
+#item table {
+	font-size: 200%;
+	background: none;
+}
+
+#item table tbody span {
+	vertical-align: 10%;
+}
+
+#item #total {
+	font-weight: bold;
+}
+
+
+.payments div {
+	transition: background-color 0.5s linear 1s;
+}
+
+.payments div:active {
+	background: #80E8D9;
+	transition: background-color 0s linear;
+}
