@@ -49,27 +49,31 @@ module.exports.load = (filename) => {
 module.exports.lookupItem = (code) => {
 	if (!DATA) return null;
 
-	const key = type = null, head = parseInt(code.substr(0, 1), 10);
+	const key = type = typestr = '', head = parseInt(code.substr(0, 1), 10);
 	switch (head) {
 	case 8:
 	case 9:
 		key = code;
 		type = 'normal';
+		typestr = '本+PDF';
 		break;
 	case 6:
 	case 7:
 		key = (head+2) + code.substr(1, 9);
 		type = 'ebook';
+		typestr = 'PDFのみ';
 		break;
 	case 4:
 	case 5:
 		key = (head+4) + code.substr(1, 9);
 		type = 'special';
+		typestr = '謹呈/見本';
 		break;
 	case 2:
 	case 3:
 		key = (head+6) + code.substr(1, 9);
 		type = 'other';
+		typestr = 'ISDN外';
 		break;
 	}
 
@@ -78,6 +82,7 @@ module.exports.lookupItem = (code) => {
 		'title': DATA.items[key].title,
 		'price': DATA.items[key].prices[type] || null,
 		'type': type,
+		'typestr': typestr,
 		'code': code,
 		'quantity': 1,
 		'dlcode': DATA.items[key].codes[type] || null
@@ -94,3 +99,14 @@ module.exports.receiptHdr = () => {
 		'seller': DATA.receipt.sellers ? DATA.receipt.sellers[Math.floor(Math.random()*DATA.receipt.sellers.length)] : null
 	};
 };
+
+module.exports.signage = () => {
+	if (!DATA) return null;
+
+	let result = [];
+	for (const key of Object.keys(DATA.items)) {
+		if (DATA.items[key].content) result.push(DATA.items[key].content);
+	}
+	
+	return result[Math.floor(Math.random()*result.length)];
+}

@@ -3,7 +3,6 @@ const debug = require('debug')('nichi');
 const express = require("express");
 const http = require('http');
 const mosca = require('mosca');
-const yaml = require('js-yaml');
 const fs = require('fs');
 
 let program = require('commander');
@@ -11,16 +10,25 @@ program
 	.usage('[options]')
 	.option('--http <port>', 'HTTP Port')
 	.option('--mqtt <port>', 'MQTT Port')
+	.option('--square <appid>', 'Square App ID')
 	.parse(process.argv);
 
 const httpport = program.http || 3000;
 const mqttport = program.mqtt || 1883;
+const spath = require('path').resolve(__dirname) + '/static';
+
+if (program.square) {
+	fs.writeFile(spath + '/square.txt', program.square);
+} else {
+	fs.unlink(spath + '/square.txt');
+}
+
 
 const app = express();
 const httpServer = http.createServer(app);
 const mqttServer = new mosca.Server({port: mqttport});
 
-app.use(express.static(require('path').resolve(__dirname) + '/static'));
+app.use(express.static(spath));
 mqttServer.on('ready', () => debug(`MQTT server is running on ${mqttport}`));
 mqttServer.on('clientConnected', client => debug(`MQTT connected: ${client.id}`));
 mqttServer.on('clientDisconnected', client => debug(`MQTT disconnected: ${client.id}`));

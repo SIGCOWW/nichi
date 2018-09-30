@@ -36,16 +36,32 @@ body {
 	vertical-align: 10%;
 }
 
+#item table tbody tr {
+	transition: color 1s linear, background-color 1s linear;
+}
+
+#item table tbody tr.is-selected {
+	transition: none;
+}
+
 #item #total {
 	font-weight: bold;
 }
 
-
 .payments div {
 	transition: background-color 0.5s linear 1s;
+	text-shadow: 
+		#FFF 2px 0px,  #FFF -2px 0px,
+		#FFF 0px -2px, #FFF 0px 2px,
+		#FFF 2px 2px , #FFF -2px 2px,
+		#FFF 2px -2px, #FFF -2px -2px,
+		#FFF 1px 2px,  #FFF -1px 2px,
+		#FFF 1px -2px, #FFF -1px -2px,
+		#FFF 2px 1px,  #FFF -2px 1px,
+		#FFF 2px -1px, #FFF -2px -1px;
 }
 
 .payments div:active {
-	background: #80E8D9;
+	background: #00d1b2;
 	transition: background-color 0s linear;
 }

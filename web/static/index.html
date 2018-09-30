@@ -15,27 +15,27 @@
       <div class="tile is-child box" id="item">
         <table class="table is-fullwidth">
           <thead>
-            <tr>
+            <tr class="is-selected">
               <td></td>
-              <td style="width:30%;text-align:right"><span id="total">&yen; 12,345</span></td>
+              <td style="width:30%;text-align:right">&yen; <span id="total">12,345</span></td>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>COSMIC L2 Vol.1518 <span class="tag is-dark is-large">物理+PDF</span></td>
-              <td style="text-align:right">&yen;500 x 1</td>
+              <td style="text-align:right">&yen; 500 × 1</td>
             </tr>
             <tr class="is-selected">
               <td>COSMIC L8 総集編 <span class="tag is-dark is-large">PDFのみ</span></td>
-              <td style="text-align:right">&yen;300 x 2</td>
+              <td style="text-align:right">&yen; 300 × 2</td>
             </tr>
             <tr>
               <td>PTA提出用 <span class="tag is-dark is-large">謹呈版</span></td>
-              <td style="text-align:right">&yen;0 x 123</td>
+              <td style="text-align:right">&yen; 0 × 123</td>
             </tr>
             <tr>
               <td>Lチカ作成キット <span class="tag is-dark is-large">ISDN外</span></td>
-              <td style="text-align:right">&yen;1,000 x 12</td>
+              <td style="text-align:right">&yen; 1,000 × 12</td>
             </tr>
           </tbody>
         </table>
@@ -43,22 +43,13 @@
     </div>
     <div class="tile is-4 is-vertical is-parent payments">
       <div class="tile is-child box" id="square"><img src="square.png" /></div>
-      <div class="tile is-child box" id="pxvpay"><img src="pxvpay.png" /></div>
-      <div class="tile is-child box"><p class="title has-text-centered is-size-1" style="font-weight:normal">現金<span style="font-size:50%"> / みせる決済</span></p></div>
+      <div class="tile is-child box" id="pixivpay"><img src="pxvpay.png" /></div>
+      <div class="tile is-child box" id="cash"><p class="title has-text-centered is-size-1" style="font-weight:normal">現金<span style="font-size:50%"> / みせる決済</span></p></div>
     </div>
   </div>
 </div></div></section>
 
-<div id="sample"></div>
-<div class="modal">
-  <div class="modal-background"></div>
-  <div class="modal-content has-text-centered">
-    <button class="button is-large" id="signage">サイネージ</button>
-    <button class="button is-large">集計</button>
-    <button class="button is-large" id="test">Square試験</button>
-  </div>
-</div>
-
+<div id="signage"></div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.550/pdf.js"></script>
 <script type="text/javascript" src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
