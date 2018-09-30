@@ -44,14 +44,21 @@ $(function() {
 		});
 	}
 
-
 	function refresh() {
 		$('#total').text(0);
 		$('#item table tbody tr').remove();
 	}
 	refresh();
-	
-	
+
+	$('.payments div').click(function() {
+		var id = $(this).data('bid');
+		if (id === void 0) {
+			alert('Button ID 未設定');
+		} else {
+			pub('cart/checkout', id);
+		}
+	});
+
 	function handleSquare(items) {
 		var appid = $('#square').data('appid');
 		if (!appid) {
@@ -112,7 +119,7 @@ $(function() {
 			$.get('/square.txt', function(data) {
 				$('#square').data('appid', data);
 			});
-			initSignage(message.signage);
+			if (message.signage) initSignage(message.signage);
 			break;
 		case 'notice/cart':
 			refresh();

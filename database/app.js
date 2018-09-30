@@ -86,4 +86,7 @@ if (client) {
 	client.subscribe('init/dbrequest');
 	client.subscribe('cart/+');
 	client.on('message', handler);
+	client.on('connect', function() {
+		pub('init/dbresponse', {'signage':db.signage()});
+	});
 }
