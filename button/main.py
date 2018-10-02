@@ -18,7 +18,7 @@ LED2_PIN = 18
 LED3_PIN = 20
 LED_PINS = [ LED1_PIN, LED2_PIN, LED3_PIN ]
 LED_STATUS = [ False, False, False ]
-LED_UNHAPPY = False
+LED_UNHAPPY = {'kemu':False, 'pixivpay':False}
 LED_UNHAPPY_TIMING = False
 
 
@@ -33,7 +33,8 @@ def pressHandler(pin):
 
 
 def ledctl():
-	if (not LED_UNHAPPY) or (LED_UNHAPPY and (not LED_UNHAPPY_TIMING)):
+	unhappy = LED_UNHAPPY['kemu'] or LED_UNHAPPY['pixivpay']
+	if (not unhappy) or (unhappy and (not LED_UNHAPPY_TIMING)):
 		status = LED_STATUS
 	else:
 		if LED_STATUS.count(True) > 0:
@@ -55,7 +56,8 @@ def onMessage(client, userdata, msg):
 	elif msg.topic == 'notice/payment':
 		LED_STATUS = [ False for i in range(len(LED_PINS)) ]
 	elif msg.topic == 'notice/unhappy':
-		LED_UNHAPPY = msg.payload
+		for (k,v) in json.loads(msg.payload).values():
+			if k in LED_UNHAPPY: LED_UNHAPPY[k] = v
 		LED_UNHAPPY_TIMING = False
 	ledctl()
 
