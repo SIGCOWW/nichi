@@ -13,6 +13,7 @@ const toDataURI = (rootpath, filename, contenttype) => {
 
 module.exports.load = (filename) => {
 	if (!filename || !fs.existsSync(filename)) {
+		debug('not found: ' + filename);
 		DATA = null;
 		return false;
 	}
@@ -49,7 +50,9 @@ module.exports.load = (filename) => {
 module.exports.lookupItem = (code) => {
 	if (!DATA) return null;
 
-	const key = type = typestr = '', head = parseInt(code.substr(0, 1), 10);
+	let key = '';
+	let type = '';
+	let typestr = '', head = parseInt(code.substr(0, 1), 10);
 	switch (head) {
 	case 8:
 	case 9:
@@ -77,15 +80,17 @@ module.exports.lookupItem = (code) => {
 		break;
 	}
 
+	console.log(code, key);
 	if (!DATA.items[key]) return null;
 	return {
 		'title': DATA.items[key].title,
-		'price': DATA.items[key].prices[type] || null,
+		'price': DATA.items[key].prices[type] || 0,
 		'type': type,
 		'typestr': typestr,
 		'code': code,
 		'quantity': 1,
-		'dlcode': DATA.items[key].codes[type] || null
+		'dlcode': DATA.items[key].codes[type] || null,
+		'keycode': DATA.items[key].keycode || null,
 	};
 };
 

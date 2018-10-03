@@ -13,15 +13,15 @@ program
 const client = (program.args.length == 0) ? null : mqtt.connect('mqtt://' + program.args[0]);
 const onScan = (code) => {
 	const pub = (topic, msg) => {
-		if (client) client.publish(topic, msg, {qos:0});
+		if (client) client.publish(topic, JSON.stringify(msg), {qos:0});
 	};
 
 	debug(`onScan: ${code}`);
 	if (/^27[2-9]\d{10}$/.test(code)) {
-		pub('cart/add', code);
-	} else if (/^26[2-9]\d{10}$/.test(code).substr(2, 10)) {
-		pub('cart/del', code);
-	} else if (/^28[2-9]\d{10}$/.test(code).substr(2, 10)) {
+		pub('cart/add', code.substr(2, 10));
+	} else if (/^26[2-9]\d{10}$/.test(code)) {
+		pub('cart/del', code.substr(2, 10));
+	} else if (/^28[2-9]\d{10}$/.test(code)) {
 		pub('receipt/preprint', code.substr(2, 10));
 	} else if (/^220\d{10}$/.test(code)) {
 		pub('cart/checkout', parseInt(code.substr(3, 9), 10));

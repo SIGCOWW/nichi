@@ -1,19 +1,21 @@
 $(function() {
-	var client = mqtt.connect('mqtt://' + ((location.hash.indexOf('#localhost') > 0) ? 'localhost' : 'sigcoww.local') + ':1883');
-	function pub(topic, msg) { client.publish(topic, msg, {qos:0}); };
+	var allowSignage = false;
+	var client = mqtt.connect('mqtt://' + location.hostname + ':' + location.port);
+	function pub(topic, msg) { client.publish(topic, JSON.stringify(msg), {qos:0}); };
 
 
 	var timeout = null;
 	$(window).on('load click', function() {
+		if (!allowSignage) return;
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
-			//$('#signage').show();
-			console.log('#signage.show()');
+			$('#signage').show();
 		}, 60 * 1000);
 	});
 
 	$('#signage').on('click', function() {
 		$('#signage').hide();
+		$(window).trigger('click');
 	});
 
 	function initSignage(file) {
@@ -41,12 +43,15 @@ $(function() {
 					page.render(renderContext);
 				});
 			}
+			allowSignage = true;
+			$(window).trigger('click');
 		});
 	}
 
 	function refresh() {
 		$('#total').text(0);
 		$('#item table tbody tr').remove();
+		$('#signage').trigger('click');
 	}
 	refresh();
 
@@ -110,10 +115,13 @@ $(function() {
 	client.subscribe('notice/cart');
 	client.subscribe('notice/payment');
 	client.on('connect', function() {
-		pub('init/dbrequest');
+		pub('init/dbrequest', '');
 	});
 
 	client.on('message', function(topic, message) {
+		message = JSON.parse(message);
+		console.log(topic, message);
+
 		switch (topic) {
 		case 'init/dbresponse':
 			$.get('/square.txt', function(data) {
@@ -128,7 +136,7 @@ $(function() {
 				if (message.add && message.cart[i].code === message.add.code) $('<tr>').addClass('is-selected');
 				var tag = $('<span>').addClass('tag is-dark is-large').text(message.cart[i].typestr);
 				var td1 = $('<td>').text(message.cart[i].title).append(tag);
-				var td2 = $('<td>').text('&yen; ' + message.cart[i].price.toLocaleString() + ' × ' + message.cart[i].quantity.toLocaleString());
+				var td2 = $('<td>').html('&yen; ' + message.cart[i].price.toLocaleString() + ' × ' + message.cart[i].quantity.toLocaleString()).css('text-align', 'right');
 				$('#item table tbody').append(tr.append(td1, td2));
 			}
 

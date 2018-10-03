@@ -1,4 +1,5 @@
 'use strict';
+const fs = require('fs');
 const moment = require('moment');
 
 let TOMI = {
@@ -13,8 +14,7 @@ module.exports.total = (method, items) => {
 	for (const item of items) {
 		const content = `${items.code},${items.quantity},${method},${items.title},${items.type},${moment().utcOffset("+09:00").format("HH:mm:ss")}`;
 		fs.appendFileSync(filepath, `${content}\n`);
+		TOMI[item.type] += item.quantity;
 	}
-
-	for (const item of items) TOMI[items.type] += item.quantity;
 	return TOMI;
 };

@@ -16,11 +16,13 @@ const client = (program.args.length == 0) ? null : mqtt.connect('mqtt://' + prog
 const handler = (topic, message) => {
 	if (topic !== 'notice/payment') return;
 	if ((COUNTER++ % NOTIFY_TIMING) != 0) return;
+	message = JSON.parse(message);
+	console.log(message);
 
 	let sum = 0;
 	for (const key of Object.keys(message.tomisata)) sum += message.tomisata[key];
 
-	const msg = `${sum} 部売れたよー\n`
+	let msg = `${sum} 部売れたよー\n`
 	msg += `  通常: ${message.tomisata['normal']}\n`
 	msg += `電子版: ${message.tomisata['ebook']}\n`
 	msg += `  謹呈: ${message.tomisata['special']}\n`
