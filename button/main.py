@@ -29,10 +29,11 @@ def cleanup():
 def pressHandler(pin):
 	if pin not in BUTTON_PINS: return
 	if MQTT_CLIENT is None: return
-	MQTT_CLIENT.publish('cart/checkout', BUTTON_PINS.index(pin))
+	MQTT_CLIENT.publish('cart/checkout', json.dumps(BUTTON_PINS.index(pin)+1))
 
 
 def ledctl():
+	global LED_UNHAPPY_TIMING
 	unhappy = LED_UNHAPPY['kemu'] or LED_UNHAPPY['pixivpay']
 	if (not unhappy) or (unhappy and (not LED_UNHAPPY_TIMING)):
 		status = LED_STATUS
@@ -41,22 +42,28 @@ def ledctl():
 			status = [ False for i in range(len(LED_PINS)) ]
 		else:
 			status = [ len(LED_PINS)//2 == i for i in range(len(LED_PINS)) ]
+
 	for i in range(len(LED_PINS)): GPIO.output(LED_PINS[i], GPIO.HIGH if status[i] else GPIO.LOW)
 	LED_UNHAPPY_TIMING = not LED_UNHAPPY_TIMING
 
 def onConnect(client, userdata, flags, respons_code):
 	MQTT_CLIENT.subscribe('notice/cart')
 	MQTT_CLIENT.subscribe('notice/payment')
+	MQTT_CLIENT.subscribe('notice/unhappy')
 
 def onMessage(client, userdata, msg):
+	global LED_STATUS
+	global LED_UNHAPPY_TIMING
+	message = json.loads(msg.payload)
+
 	if msg.topic == 'notice/cart':
 		count = 0
-		for item in json.loads(msg.payload)['items']: count += item['quantity']
+		for item in message['cart']: count += item['quantity']
 		LED_STATUS = [ i < count for i in range(len(LED_PINS)) ]
 	elif msg.topic == 'notice/payment':
 		LED_STATUS = [ False for i in range(len(LED_PINS)) ]
 	elif msg.topic == 'notice/unhappy':
-		for (k,v) in json.loads(msg.payload).values():
+		for (k,v) in message.items():
 			if k in LED_UNHAPPY: LED_UNHAPPY[k] = v
 		LED_UNHAPPY_TIMING = False
 	ledctl()
@@ -65,7 +72,7 @@ def onMessage(client, userdata, msg):
 if __name__ == '__main__':
 	argv = sys.argv
 	argc = len(argv)
-	if argv != 1:
+	if argc != 2:
 		print('$ python main.py <MQTT_HOST:PORT>')
 		exit(1)
 
@@ -93,4 +100,4 @@ if __name__ == '__main__':
 
 	while True:
 		ledctl()
-		time.sleep(0.5)
+		MQTT_CLIENT.loop(1)
