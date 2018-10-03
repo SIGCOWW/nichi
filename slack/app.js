@@ -17,7 +17,7 @@ const handler = (topic, message) => {
 	if (topic !== 'notice/payment') return;
 	if ((COUNTER++ % NOTIFY_TIMING) != 0) return;
 	message = JSON.parse(message);
-	console.log(message);
+	if (message.method === 'cancel') return;
 
 	let sum = 0;
 	for (const key of Object.keys(message.tomisata)) sum += message.tomisata[key];

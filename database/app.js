@@ -51,8 +51,7 @@ const handler = (topic, message) => {
 				const items = cart.items();
 				if (items.length === 0) break;
 				const method = PAYMENT_METHODS[message];
-				if (method === 'cancel') break;
-				const tomisata = log.total(method, items);
+				const tomisata = (method === 'cancel') ? null : log.total(method, items);
 				pub('notice/payment', {'method':method, 'cart':items, 'total':cartsum(items), 'tomisata':tomisata});
 				cart.clear();
 			}
@@ -79,7 +78,7 @@ const handler = (topic, message) => {
 				break;
 			}
 		}
-		pub('notify/unhappy', {'pixivpay':unhappy});
+		pub('notice/unhappy', {'pixivpay':unhappy});
 		break;
 	case 'receipt':
 		if (subcategory === 'preprint') {
