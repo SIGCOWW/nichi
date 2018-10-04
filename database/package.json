@@ -1,0 +1,12 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "commander": "^2.18.0",
+    "debug": "^4.0.1",
+    "js-yaml": "^3.12.0",
+    "moment": "^2.22.2",
+    "mqtt": "^2.18.8"
+  }
+}

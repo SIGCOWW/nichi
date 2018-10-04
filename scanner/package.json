@@ -1,0 +1,12 @@
+{
+  "name": "scanner",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "commander": "^2.18.0",
+    "debug": "^4.0.1",
+    "mqtt": "^2.18.8",
+    "node-hid": "^0.7.3",
+    "readline": "^1.3.0"
+  }
+}

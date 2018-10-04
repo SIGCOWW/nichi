@@ -1,0 +1,13 @@
+{
+  "name": "kemu",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "commander": "^2.18.0",
+    "dbus": "^1.0.3",
+    "debug": "^4.0.1",
+    "mqtt": "^2.18.8"
+  },
+  "devDependencies": {}
+}

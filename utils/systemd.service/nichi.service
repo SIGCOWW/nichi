@@ -1,0 +1,9 @@
+[Unit]
+Description=sigcoww pos
+
+[Service]
+ExecStart=/usr/local/bin/node /home/pi/nichi/index.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
