@@ -1,0 +1,10 @@
+[Unit]
+Description=nichi database server
+After=nichi-web.service
+
+[Service]
+ExecStart=/usr/local/bin/node /home/pi/nichi/database/app.js -f ITEM_FILE.yml MQTTHOST:PORT
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

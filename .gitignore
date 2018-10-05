@@ -66,3 +66,4 @@ database/data/*.png
 database/data/*.pdf
 database/data/*.yml
 web/static/*.txt
+utils/systemd.service/*.service

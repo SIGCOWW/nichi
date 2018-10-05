@@ -1,0 +1,11 @@
+[Unit]
+Description=nichi kemu client
+After=nichi-kemusrv.service nichi-web.service
+
+[Service]
+ExecStart=/usr/local/bin/node /home/pi/nichi/kemu/app.js MQTTHOST:PORT
+Restart=always
+StartLimitInterval=30
+
+[Install]
+WantedBy=multi-user.target

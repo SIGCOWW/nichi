@@ -18,11 +18,10 @@ const mqttport = program.mqtt || 1883;
 const spath = require('path').resolve(__dirname) + '/static';
 
 if (program.square) {
-	fs.writeFile(spath + '/square.txt', program.square);
+	fs.writeFile(spath + '/square.txt', program.square, (err) => {});
 } else {
-	fs.unlink(spath + '/square.txt');
+	fs.unlink(spath + '/square.txt', (err) => {});
 }
-
 
 const app = express();
 const httpServer = http.createServer(app);

@@ -1,0 +1,9 @@
+[Unit]
+Description=nichi web server
+
+[Service]
+ExecStart=/usr/local/bin/node /home/pi/nichi/web/app.js --square APP_ID MQTTHOST:PORT
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

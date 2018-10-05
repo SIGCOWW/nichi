@@ -31,4 +31,7 @@ const handler = (topic, message) => {
 if (client) {
 	client.subscribe('keyboard/press');
 	client.on('message', handler);
+	client.on('connect', () => {
+		pub('notice/unhappy', {'kemu':true});
+	});
 }

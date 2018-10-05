@@ -1,0 +1,10 @@
+[Unit]
+Description=nichi touchscanner server
+After=nichi-web.service
+
+[Service]
+ExecStart=/usr/local/bin/node /home/pi/nichi/scanner/app.js --usb VID:PID MQTTHOST:PORT
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

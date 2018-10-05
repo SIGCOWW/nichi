@@ -1,0 +1,10 @@
+[Unit]
+Description=nichi notify server
+After=nichi-web.service
+
+[Service]
+ExecStart=/usr/local/bin/node /home/pi/nichi/slack/app.js --slack WEBHOOK_URL MQTTHOST:PORT
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

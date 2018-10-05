@@ -26,6 +26,9 @@ module.exports.connect = (successHandler, errHandler) => {
 		if (err && ERR_HANDLER) {
 			debug(err);
 			ERR_HANDLER();
+			setTimeout(() => {
+				process.exit(1);
+			}, 30 * 1000);
 			return;
 		}
 
@@ -61,10 +64,9 @@ const pressKey = (code, callback) => {
 
 const recover = () => {
 	pressKey(keymap.toCode('z'), () => {
-		debug('Reconnect');
-		//exec('sudo systemctl start btkey-server', (err, stdout, stderr) => {
-		//	module.exports.connect(SUCCESS_HANDLER, ERR_HANDLER);
-		//});
+		exec('sudo systemctl restart nichi-kemusrv', (err, stdout, stderr) => {
+			module.exports.connect(SUCCESS_HANDLER, ERR_HANDLER);
+		});
 	});
 };
 
