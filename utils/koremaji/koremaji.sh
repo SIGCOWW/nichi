@@ -19,6 +19,7 @@ if [ $? -ne 0 ]; then exit; fi
 
 
 # 本気モード
+echo "heartbeat" > /sys/class/leds/led0
 tvservice --off
 ip link show up | grep -o -E 'wlan[0-9]+' | while read -r line; do
 	ifconfig "$line" down
