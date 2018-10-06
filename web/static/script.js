@@ -23,14 +23,16 @@ $(function() {
 		container.empty().width(0);
 
 		pdfjsLib.getDocument(file).then(function(pdf) {
+			var cs = new Array(pdf.numPages);
 			for (var i=1; i<=pdf.numPages; i++) {
-				var l = pdf.getPage(i).then(function(page) {
+				pdf.getPage(i).then(function(page) {
 					var viewport = page.getViewport(1);
 					var scale = window.innerHeight / viewport.height;
 					viewport = page.getViewport(scale);
 
 					var canvas = document.createElement("canvas");
-					container.append(canvas);
+					//container.append(canvas);
+					cs[page.pageIndex] = canvas;
 					var context = canvas.getContext('2d');
 					canvas.height = viewport.height;
 					canvas.width = viewport.width;
@@ -43,8 +45,25 @@ $(function() {
 					page.render(renderContext);
 				});
 			}
-			allowSignage = true;
-			$(window).trigger('click');
+
+			function done() {
+				var complete = true;
+				for (var i=0; i<cs.length; i++) {
+					if (!cs[i]) {
+						complete = false;
+						break;
+					}
+				}
+
+				if (!complete) {
+					setTimeout(done, 1000);
+					return;
+				}
+				container.append(cs);
+				allowSignage = true;
+				$(window).trigger('click');
+			}
+			setTimeout(done, 1000);
 		});
 	}
 
@@ -97,7 +116,7 @@ $(function() {
 		var postfix = 'e';
 		var keychar = '';
 		for (var i=0; i<items.cart.length; i++) {
-			if (items.cart[i].keychar === null) {
+			if (!items.cart[i].keychar) {
 				postfix = '';
 				continue;
 			}
