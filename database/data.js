@@ -36,7 +36,7 @@ module.exports.load = (filename) => {
 			yml.items[key].cover = !fs.existsSync(`${rootpath}/${yml.items[key].cover}`) ? null :
 				toDataURI(rootpath, yml.items[key].cover, 'image/png');
 		}
-		
+
 		if (yml.items[key].content) {
 			yml.items[key].content = !fs.existsSync(`${rootpath}/${yml.items[key].content}`) ? null :
 				toDataURI(rootpath, yml.items[key].content, 'application/pdf');
@@ -90,7 +90,7 @@ module.exports.lookupItem = (code) => {
 		'code': code,
 		'quantity': 1,
 		'dlcode': DATA.items[key].codes[type] || null,
-		'keycode': DATA.items[key].keycode || null,
+		'keychar': DATA.items[key].keychar || null,
 	};
 };
 
@@ -112,6 +112,6 @@ module.exports.signage = () => {
 	for (const key of Object.keys(DATA.items)) {
 		if (DATA.items[key].content) result.push(DATA.items[key].content);
 	}
-	
+
 	return result[Math.floor(Math.random()*result.length)];
 }

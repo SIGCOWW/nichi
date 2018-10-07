@@ -74,6 +74,14 @@ $(function() {
 	}
 	refresh();
 
+	// Tethering KeepAlive
+	setInterval(function() {
+		$.get('/status.html', function(data) {
+			console.log(data);
+		});
+	}, 60 * 1000);
+
+
 	$('.payments div').click(function() {
 		var id = $(this).data('bid');
 		if (id === void 0) {
@@ -89,13 +97,13 @@ $(function() {
 			alert('[Square] AppID未設定');
 			return;
 		}
-		
+
 		var total = items.total;
 		if (total < 100) {
 			alert('[Square] 100円未満の決済不可');
 			return;
 		}
-		
+
 		var param = {
 			'amount_money': {
 				'amount': total,
@@ -111,9 +119,9 @@ $(function() {
 		pub('keyboard/press', 'Q');
 		window.location = 'square-commerce-v1://payment/create?data=' + encodeURIComponent(JSON.stringify(param));
 	}
-	
+
 	function handlePixivpay(items) {
-		var postfix = 'e';
+		var postfix = 'ee';
 		var keychar = '';
 		for (var i=0; i<items.cart.length; i++) {
 			if (!items.cart[i].keychar) {
@@ -125,11 +133,14 @@ $(function() {
 				keychar += items.cart[i].keychar;
 			}
 		}
+		alert('PRESS: ' + 'Q' + keychar + postfix);
+		keychar = 'w';
+		postfix = '';
 		pub('keyboard/press', 'Q'+keychar+postfix);
 		window.location = 'serval://';
 	}
-	
-	
+
+
 	client.subscribe('init/dbresponse');
 	client.subscribe('notice/cart');
 	client.subscribe('notice/payment');

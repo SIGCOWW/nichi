@@ -73,7 +73,7 @@ const handler = (topic, message) => {
 
 		let unhappy = false;
 		for (const item of cart.items()) {
-			if (item.keycode === null) {
+			if (!item.keychar) {
 				unhappy = true;
 				break;
 			}
